@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
-
 class MyUserManager(BaseUserManager):
     def create_user(self, email, password=None):
         """
@@ -36,15 +35,17 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-
     email = models.EmailField(
         verbose_name="email address",
         max_length=100,
         unique=True,
-        validators=[RegexValidator(r"^[-a-zA-Z0-9_]{3,}")]#Минимальное кол-во символов 3(до "@")
+        validators=[RegexValidator(r"^[-a-zA-Z0-9_]{3,}")]  # Минимальное кол-во символов 3(до "@")
     )
     password = models.CharField(max_length=64, validators=[MaxLengthValidator(limit_value=64),
-                                                           MinLengthValidator(limit_value=8)])
+                                                           MinLengthValidator(limit_value=8),
+                                                           RegexValidator(
+                                                               r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{8,64}")
+                                                           ])
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     last_login = None
@@ -72,4 +73,3 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-
