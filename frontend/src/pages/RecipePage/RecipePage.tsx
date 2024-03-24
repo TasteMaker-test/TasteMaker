@@ -1,6 +1,6 @@
 import "./RecipePage.css"
 
-import * as s from "./RecipePage.module.css"
+import s from "./RecipePage.module.css"
 
 import recipePreview from "./../../assets/recipe-example.png"
 import { useAppDispatch } from "../../hooks/reduxHooks"
@@ -71,27 +71,29 @@ export const RecipePage = () => {
       <p className={s.recipeTitle}>{recipeSelector.name}</p>
       <br />
       <br />
-      <p className={s.recipeDescription}>{recipeSelector.description}</p>
+      <div className={s.recipeDescriptionDiv}>
+        <p className={s.recipeDescription}>{recipeSelector.description}</p>
+      </div>
       <br />
       <br />
       <img className={s.recipePreview} src={recipeSelector.image} />
       <br />
       <br />
-      <div className={s.recipeDoubleDiv}>
-        <div className="recipe-ingredients-div">
-          <p className="recipe-subtitle">ИНГРЕДИЕНТЫ</p>
-          <p className="recipe-description">
-            {recipeSelector.cooking_instructions}
-          </p>
+      <div className={s.bottomDiv}>
+        <div className={s.recipeDoubleDiv}>
+          <div className={s.recipeIngredientsDiv}>
+            <p className={s.recipeSubtitle}>ИНГРЕДИЕНТЫ</p>
+            <p className={s.recipeDescription}>
+              {recipeSelector.ingredients}
+            </p>
+          </div>
+          <div className="recipe-time-div">
+            {/* <p className="recipe-time-info">Время приготовления: 40 мин</p> */}
+          </div>
         </div>
-        <div className="recipe-time-div">
-          {/* <p className="recipe-time-info">Время приготовления: 40 мин</p> */}
-        </div>
+        <p className="recipe-subtitle">ПОШАГОВЫЙ РЕЦЕПТ ПРИГОТОВЛЕНИЯ</p>
+        <Step n={1} text={recipeSelector.cooking_instructions} />
       </div>
-      <br />
-      <br />
-      <p className="recipe-subtitle">ПОШАГОВЫЙ РЕЦЕПТ ПРИГОТОВЛЕНИЯ</p>
-      <Step n={1} text={recipeSelector.cooking_instructions} />
     </div>
   )
 }

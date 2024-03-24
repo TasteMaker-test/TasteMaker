@@ -13,3 +13,8 @@
     font-family: Inter, sans-serif;
     font-weight: 600;
 }
+
+.img {
+    max-height: 400px;
+    object-fit: contain;
+}

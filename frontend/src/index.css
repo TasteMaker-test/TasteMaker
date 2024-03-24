@@ -191,6 +191,7 @@ template {
 :root{
     --main-black: #4E4E4E;
     --bottom: #E05F5F;
+    --active: #CBCBCB;
 }
 
 h2 {

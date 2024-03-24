@@ -20,6 +20,10 @@
     margin: 0px;
 }
 
+.recipeDescriptionDiv{
+    padding: 7px 13px;
+}
+
 .recipeDescription{
     font-size: 24px;
 
@@ -42,7 +46,10 @@
 
 .recipeDoubleDiv{
     display: flex;
+
     flex-direction: row;
+
+    margin-bottom: 40px;
 }
 
 .recipeTimeDiv{
@@ -82,5 +89,11 @@
     text-align: left;
 
     margin: 0px;
+
+    margin-bottom: 20px;
+}
+
+.bottomDiv{
+    padding: 7px 13px;
 }
 

@@ -9,6 +9,7 @@ import { useAppDispatch } from "./hooks/reduxHooks.ts"
 import { checkAuth } from "./store/slices/authorization/userActions.ts"
 import { RecipePage } from "./pages/RecipePage/RecipePage.tsx"
 import { NewRecipePage } from "./pages/NewRecipePage/NewRecipePage.tsx"
+import { ProfilePage } from "./pages/ProfilePage/ProfilePage.tsx"
 
 function App() {
   const dispatch = useAppDispatch()
@@ -28,6 +29,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/recipes/:id" element={<RecipePage />} />
           <Route path="/add-new-recipe" element={<NewRecipePage />} />
+          <Route path="/my-profile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </>
