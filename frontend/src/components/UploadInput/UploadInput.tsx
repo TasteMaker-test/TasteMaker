@@ -25,7 +25,7 @@ export const UploadInput = forwardRef<HTMLInputElement, Props>(
           setError("Разрешается загружать фото в JPG или PNG форматах")
           return
         }
-        if (image.size > 2e6) {
+        if (image.size > 2 * 1024 * 1024) {
           setError("Размер фотографии не должен превышать 2 мб")
           if (preview.current) preview.current.src = ""
           setIsLoaded(false)
