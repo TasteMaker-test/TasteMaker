@@ -19,7 +19,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        exclude = ['is_active', 'is_admin']
+        exclude = ['is_active', 'is_admin', 'is_superuser', 'groups', 'user_permissions']
 
     def create(self, validated_data):
         """Создаем хешируемый пароль пользователя"""
