@@ -14,7 +14,8 @@ from .filters import IngredientFilter
 from .models import Recipe, Ingredient, Measure
 from .serializers import FormDataSerializer, RecipeSerializer, IngredientSerializer, MeasureSerializer
 
-
+@extend_schema_view(
+    get=extend_schema(summary='Получение ингредиента по "id"', tags=['Игредиенты']),)
 class IngredientModelView(generics.ListAPIView):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer

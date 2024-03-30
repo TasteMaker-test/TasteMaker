@@ -7,7 +7,8 @@ from .serializers import RegistrationSerializer, UserUpdateSerializer, UserSeria
 
 
 @extend_schema_view(
-    post=extend_schema(summary='Регистрация пользователя', tags=['Аутентификация & Авторизация'])
+    post=extend_schema(summary='Регистрация пользователя', tags=['Аутентификация & Авторизация']),
+    get=extend_schema(summary='Получение данных пользователя', tags=['Аутентификация & Авторизация'])
 )
 class UserCreateView(generics.CreateAPIView):
     """Оправляет POST запрос для регистрации пользователя в БД"""
@@ -24,7 +25,11 @@ class UserCreateView(generics.CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(status=status.HTTP_201_CREATED)
 
-
+@extend_schema_view(
+    get=extend_schema(summary='Получение данных пользователя', tags=['Аутентификация & Авторизация']),
+    patch=extend_schema(summary='Частичное редактирование данных пользователя', tags=['Аутентификация & Авторизация']),
+    put=extend_schema(summary='Полное редактирование данных пользователя', tags=['Аутентификация & Авторизация'])
+)
 class UserRUDView(generics.RetrieveUpdateAPIView):
     """Представление модели Пользователя"""
     queryset = User.objects.all()
