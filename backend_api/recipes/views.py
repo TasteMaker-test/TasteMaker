@@ -1,4 +1,3 @@
-
 from rest_framework import status, generics
 from rest_framework.exceptions import ValidationError
 
@@ -14,8 +13,9 @@ from .filters import IngredientFilter
 from .models import Recipe, Ingredient, Measure
 from .serializers import FormDataSerializer, RecipeSerializer, IngredientSerializer, MeasureSerializer
 
+
 @extend_schema_view(
-    get=extend_schema(summary='Получение ингредиента по "id"', tags=['Игредиенты']),)
+    get=extend_schema(summary='Получение ингредиента по "id"', tags=['Игредиенты']), )
 class IngredientModelView(generics.ListAPIView):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
@@ -23,6 +23,8 @@ class IngredientModelView(generics.ListAPIView):
     filterset_class = IngredientFilter
 
 
+@extend_schema_view(
+    get=extend_schema(summary='Получение всех единиц измерения', tags=['Единицы измерения']), )
 class MeasureModelView(generics.ListAPIView):
     queryset = Measure.objects.all()
     serializer_class = MeasureSerializer
@@ -36,7 +38,6 @@ class MeasureModelView(generics.ListAPIView):
     partial_update=extend_schema(summary='Частичное редактирование рецепта', tags=['Рецепты']),
     destroy=extend_schema(summary='Удаление рецепта', tags=['Рецепты']),
 )
-
 class RecipeModelViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
@@ -83,7 +84,6 @@ class RecipeModelViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
 
@@ -110,7 +110,6 @@ class RecipeModelViewSet(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
-
 
     def get_permissions(self):
         """Установка разных уровней доступа для методов"""
