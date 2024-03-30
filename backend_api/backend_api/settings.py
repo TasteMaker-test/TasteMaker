@@ -1,8 +1,12 @@
 import os
+import environ
 from datetime import timedelta
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+root = environ.Path(__file__) - 2
+env = environ.Env()
+
+environ.Env.read_env(env.str(root(), '.env'))
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 """Директория для фикстур проекта. При выполниении команды -  python3 manage.py loaddata fixtures.json
@@ -15,7 +19,7 @@ FIXTURE_DIRS = [
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9a0#$0p_0x46)y1xf6r)sgfo=c34#l%(520u_254kpps08dd59'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +44,9 @@ INSTALLED_APPS += [
     'rest_framework.authtoken',
     'rest_framework',
     'drf_spectacular',# swagger docs
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
 ]
 
 # apps
@@ -71,6 +78,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # OAuth
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -109,9 +119,32 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        'drf_social_oauth2.authentication.SocialAuthentication',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+#############################
+#       Auth_Google     #
+#############################
+AUTHENTICATION_BACKENDS = (
+    # Google  OAuth2
+    'social_core.backends.google.GoogleOAuth2',
+    # drf-social-oauth2
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    # Django
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Google configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env.str('GOOGLE_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env.str('GOOGLE_SECRET')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
 
 #############################
 #       DRF-SPECTACULAR     #

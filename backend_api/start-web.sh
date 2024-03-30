@@ -5,6 +5,7 @@
 python manage.py collectstatic --no-input
 python manage.py makemigrations
 python manage.py migrate
+python manage.py loaddata fixture-ingredients.json fixture-measures.json
 
 if [[ "$DJANGO_ENV" = "PRODUCTION" ]]; then
   gunicorn -b 0.0.0.0:8000 \
