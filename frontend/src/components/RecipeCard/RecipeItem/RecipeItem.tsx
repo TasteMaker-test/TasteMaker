@@ -1,4 +1,3 @@
-import { Recipe } from "../../../pages/HomePage/HomePage.tsx"
 import s from "./RecipeItem.module.css"
 import { IRecipe } from "../../../store/slices/recipes/recipeSlice.ts"
 export const RecipeItem = ({ name, image, id }: IRecipe) => {
