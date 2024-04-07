@@ -39,11 +39,8 @@
 .recipePreview{
     width: 100vw;
 
-    max-height: 460px;
-
-    margin: 0px;
-
-    object-fit: contain;
+    max-height: 500px;
+    object-fit: cover;
 }
 
 .recipeDoubleDiv{
