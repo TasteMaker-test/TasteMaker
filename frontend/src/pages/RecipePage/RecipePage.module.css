@@ -37,11 +37,13 @@
 }
 
 .recipePreview{
-    width: 100%;
+    width: 100vw;
 
-    height: auto;
+    max-height: 460px;
 
     margin: 0px;
+
+    object-fit: contain;
 }
 
 .recipeDoubleDiv{
