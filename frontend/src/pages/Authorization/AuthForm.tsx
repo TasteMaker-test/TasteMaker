@@ -52,7 +52,7 @@ export const AuthForm = ({ formType }: Props) => {
     isEmpty: true,
     maxLength: 100,
   })
-  return isAuth ? (
+  return isAuth === "authorized" ? (
     <Navigate to="/" />
   ) : (
     <>
