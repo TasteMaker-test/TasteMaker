@@ -9,15 +9,12 @@ import { useAppDispatch } from "./hooks/reduxHooks.ts"
 import { checkAuth } from "./store/slices/authorization/userActions.ts"
 import { RecipePage } from "./pages/RecipePage/RecipePage.tsx"
 import { NewRecipePage } from "./pages/NewRecipePage/NewRecipePage.tsx"
-import { ProfilePage } from "./pages/ProfilePage/ProfilePage.tsx"
+import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute.tsx"
 
 function App() {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    const access = localStorage.getItem("access")
-    if (access) {
-      dispatch(checkAuth(access))
-    }
+    dispatch(checkAuth())
   }, [])
   return (
     <>
@@ -28,8 +25,14 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/recipes/:id" element={<RecipePage />} />
-          <Route path="/add-new-recipe" element={<NewRecipePage />} />
-          <Route path="/my-profile" element={<ProfilePage />} />
+          <Route
+            path="/add-new-recipe"
+            element={
+              <PrivateRoute>
+                <NewRecipePage />
+              </PrivateRoute>
+            }
+          />
         </Route>
       </Routes>
     </>

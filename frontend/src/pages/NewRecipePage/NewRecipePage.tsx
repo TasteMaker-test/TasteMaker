@@ -1,5 +1,4 @@
-import { useAuth } from "../../hooks/useAuth.ts"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Textarea } from "../../components/UI/Textarea/Textarea.tsx"
 import { Input } from "../../components/UI/Input/Input.tsx"
 import { useInput } from "../../hooks/useInput.ts"
@@ -12,7 +11,6 @@ import FormData from "form-data"
 import { addRecipe } from "../../store/slices/recipes/recipeActions.ts"
 
 export const NewRecipePage = () => {
-  const { isAuth } = useAuth()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -88,9 +86,7 @@ export const NewRecipePage = () => {
     }
   }
 
-  return !localStorage.getItem("access") ? (
-    <Navigate to="/login" />
-  ) : (
+  return (
     <div>
       <h2>Добавление нового рецепта</h2>
       <p>

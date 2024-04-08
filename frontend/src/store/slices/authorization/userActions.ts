@@ -65,16 +65,17 @@ export const loginByEmail = createAsyncThunk(
 
 export const checkAuth = createAsyncThunk(
   "checkAuth",
-  async (access: string, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await $api.post<Record<"token", string>>(
         "/token/verify/",
         {
-          token: access,
+          token: localStorage.getItem("access"),
         },
       )
+
       if (response.status == 200) {
-        return { accessToken: access }
+        return { accessToken: localStorage.getItem("access") }
       } else {
         return { accessToken: null }
       }
