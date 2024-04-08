@@ -2,7 +2,7 @@ import s from "./Header.module.css"
 import { Container } from "../UI/Container/Container.tsx"
 import { Button } from "../UI/Button/Button.tsx"
 import { Link } from "react-router-dom"
-import Logo from "../../assets/logo.png"
+import Logo from "../../assets/logo.svg?react"
 import { useAuth } from "../../hooks/useAuth.ts"
 import userDefaultIcon from "../../assets/icons/user.png"
 
@@ -14,7 +14,7 @@ export const Header = () => {
       <Container>
         <header className={s.header}>
           <Link to="/">
-            <img src={Logo} alt="logo" />
+            <Logo />
           </Link>
           <nav className={s.menu}>
             {/*<ul>*/}

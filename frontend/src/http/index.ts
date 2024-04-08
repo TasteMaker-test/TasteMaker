@@ -38,15 +38,25 @@ $api.interceptors.response.use(
       !error.config._isRetry
     ) {
       originalRequest._isRetry = true
+      console.log(originalRequest.data)
       try {
         const response = await axios.post<AuthResponse>(
           `${API_URL}/token/refresh/`,
           { refresh: localStorage.getItem("refresh") },
         )
+
         const { access } = response.data
         localStorage.setItem("access", access)
         originalRequest.headers.Authorization = `Bearer ${access}`
-        originalRequest.data = { ...originalRequest.data, token: access }
+
+        if (originalRequest.data instanceof FormData) {
+          const formData = new FormData()
+          originalRequest.data.forEach((value, key) => {
+            formData.append(key, value)
+          })
+          originalRequest.data = formData
+        }
+
         return $api.request(originalRequest)
       } catch (e) {
         console.log("пользователь не авторизован")

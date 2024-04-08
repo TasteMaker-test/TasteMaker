@@ -38,6 +38,7 @@ const userSlice = createSlice({
           state.refreshToken = payload.refreshToken
           localStorage.setItem("access", payload.accessToken || "")
           localStorage.setItem("refresh", payload.refreshToken || "")
+          state.status = "authorized"
         }
       })
       .addCase(registerByEmail.rejected, (state, action) => {
@@ -59,7 +60,8 @@ const userSlice = createSlice({
         localStorage.setItem("refresh", payload.refreshToken)
         state.status = "authorized"
       })
-      .addCase(loginByEmail.rejected, (state) => {
+      .addCase(loginByEmail.rejected, (state, action) => {
+        console.log(action)
         state.errorMessage = "Неверные логин или пароль"
         state.status = "unknown"
       })

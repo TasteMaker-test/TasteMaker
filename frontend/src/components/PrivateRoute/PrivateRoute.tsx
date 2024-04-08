@@ -1,15 +1,21 @@
 import { Navigate, RouteProps } from "react-router-dom"
 import { ReactNode } from "react"
 import { useAuth } from "../../hooks/useAuth.ts"
+import { IUser } from "../../store/slices/authorization/userSlice.ts"
 
 type Props = {
   children: ReactNode
   redirect?: string
+  authStatus?: IUser["status"]
 } & RouteProps
-export const PrivateRoute = ({ children, redirect = "/login" }: Props) => {
+export const PrivateRoute = ({
+  children,
+  redirect = "/login",
+  authStatus = "authorized",
+}: Props) => {
   const { isAuth } = useAuth()
 
-  return isAuth === "authorized" ? (
+  return isAuth === authStatus ? (
     children
   ) : isAuth === "loading" ? (
     <div>Загрузка...</div>
