@@ -38,7 +38,6 @@ $api.interceptors.response.use(
       !error.config._isRetry
     ) {
       originalRequest._isRetry = true
-      console.log(originalRequest.data)
       try {
         const response = await axios.post<AuthResponse>(
           `${API_URL}/token/refresh/`,

@@ -49,7 +49,6 @@ export const loginByEmail = createAsyncThunk(
   "loginByEmail",
   async ({ email, password }: requestArgs, { rejectWithValue }) => {
     try {
-      console.log(1)
       const tokenResponse = await $apiWithoutToken.post<AuthResponse>(
         "/token/",
         {
@@ -57,11 +56,9 @@ export const loginByEmail = createAsyncThunk(
           password,
         },
       )
-      console.log(2)
       if (tokenResponse.status !== 200) {
         return rejectWithValue("неверные данные пользователя")
       }
-      console.log(3)
       const { access, refresh } = tokenResponse.data
       return { refreshToken: refresh, accessToken: access, email }
     } catch (e) {
