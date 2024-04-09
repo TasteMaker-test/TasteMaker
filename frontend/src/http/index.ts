@@ -56,6 +56,10 @@ $api.interceptors.response.use(
           originalRequest.data = formData
         }
 
+        if (originalRequest.url?.includes("token/verify")) {
+          originalRequest.data = { token: access }
+        }
+
         return $api.request(originalRequest)
       } catch (e) {
         console.log("пользователь не авторизован")
