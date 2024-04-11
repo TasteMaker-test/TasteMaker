@@ -31,7 +31,7 @@ class Category(models.Model):
 class Recipe(models.Model):
     name = models.CharField(max_length=150)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # при удалении данного юзера, удалятся все, связанные с ним рецепты.
-    description = models.TextField(max_length=1500)
+    description = models.TextField(max_length=1500, blank=True, null=True)
     image = models.ImageField(upload_to=generate_filename,
                               validators=[
                                   validators.FileExtensionValidator(['png', 'jpg', 'jpeg']),
