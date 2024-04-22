@@ -18,7 +18,7 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
 RUN apt-get update && \
   apt-get install --no-install-recommends -y \
   build-essential \
-  gettext \
+  nano \
   libpq-dev \
   wget \
   # Cleaning cache:
@@ -45,13 +45,10 @@ RUN poetry config virtualenvs.create false && \
 
 USER django
 
+## Setting up proper permissions:
+RUN chmod +x start-web.sh
+
 EXPOSE 8000
 
 ENTRYPOINT ["./start-web.sh"]
 
-#COPY start-web.sh start-web.sh
-#
-## Setting up proper permissions:
-#RUN chmod +x start-web.sh
-
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
