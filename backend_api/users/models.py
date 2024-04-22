@@ -45,8 +45,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         unique=True,
         validators=[RegexValidator(r"^[-a-zA-Z0-9_]{3,}")]#Минимальное кол-во символов 3(до "@")
     )
-    password = models.CharField(max_length=64, validators=[MaxLengthValidator(limit_value=64),
-                                                           MinLengthValidator(limit_value=8)])
+    password = models.CharField(max_length=100, validators=[MinLengthValidator(limit_value=8),
+                                                            MaxLengthValidator(limit_value=64)])
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
