@@ -1,6 +1,6 @@
 from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 from services.services import validate_file_size, generate_filename_upload_photo
 

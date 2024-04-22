@@ -1,8 +1,11 @@
 import uuid
+from datetime import timedelta
+
 from django.db import models
 from django.core import validators
 from rest_framework.exceptions import ValidationError
 
+from services.services import generate_filename, validate_file_size
 from users.models import User
 
 
@@ -35,9 +38,9 @@ class Measure(models.Model):
     name = models.CharField(max_length=150)
 
 class RecipeIngredient(models.Model):
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='ingredients')
     amount = models.CharField(max_length=150)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
-    measure = models.ForeignKey(Measure, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe')
+    measure = models.ForeignKey(Measure, on_delete=models.CASCADE, related_name='measure')
     class Meta:
         unique_together = ['recipe', 'ingredient']

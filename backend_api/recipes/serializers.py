@@ -3,7 +3,7 @@ from django.db import transaction
 from rest_framework import serializers, fields
 from rest_framework.exceptions import ValidationError
 
-from .models import Recipe, Step, Ingredient, RecipeIngredient, Measure
+from .models import Ingredient, Measure, Step, RecipeIngredient, Recipe
 
 
 # ------------ FORM-DATA SERIALIZER ------------
