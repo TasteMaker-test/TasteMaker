@@ -1,5 +1,7 @@
 FROM python:3.11-slim-buster
 
+SHELL ["/bin/bash", "-c"]
+
 ENV DJANGO_ENV=${DJANGO_ENV} \
   # python:
   PYTHONFAULTHANDLER=1 \
@@ -15,14 +17,14 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
   POETRY_CACHE_DIR='/var/cache/pypoetry'
 
 # System deps:
-RUN apt-get update && \
-  apt-get install --no-install-recommends -y \
+RUN apt update && \
+  apt install --no-install-recommends -y \
   build-essential \
   nano \
   libpq-dev \
   wget \
   # Cleaning cache:
-  && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
+  && apt autoremove -y && apt clean -y && rm -rf /var/lib/apt/lists/* \
   # Installing `poetry` package manager:
   # https://github.com/python-poetry/poetry
   && pip install "poetry-core==1.8.1" "poetry==$POETRY_VERSION" && poetry --version
