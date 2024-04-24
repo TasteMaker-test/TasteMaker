@@ -7,7 +7,7 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata fixture-ingredients.json fixture-measures.json
 
-if [ "$DJANGO_SUPERUSER_EMAIL" ];
+if [[ "$DJANGO_SUPERUSER_EMAIL" ]];
 then
     python manage.py createsuperuser \
         --noinput \
