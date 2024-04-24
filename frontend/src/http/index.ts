@@ -43,10 +43,23 @@ $api.interceptors.response.use(
           `${API_URL}/token/refresh/`,
           { refresh: localStorage.getItem("refresh") },
         )
+
         const { access } = response.data
         localStorage.setItem("access", access)
         originalRequest.headers.Authorization = `Bearer ${access}`
-        originalRequest.data = { ...originalRequest.data, token: access }
+
+        if (originalRequest.data instanceof FormData) {
+          const formData = new FormData()
+          originalRequest.data.forEach((value, key) => {
+            formData.append(key, value)
+          })
+          originalRequest.data = formData
+        }
+
+        if (originalRequest.url?.includes("token/verify")) {
+          originalRequest.data = { token: access }
+        }
+
         return $api.request(originalRequest)
       } catch (e) {
         console.log("пользователь не авторизован")

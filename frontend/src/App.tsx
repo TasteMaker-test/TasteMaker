@@ -21,8 +21,22 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="/registration" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/registration"
+            element={
+              <PrivateRoute redirect="/" authStatus="unknown">
+                <RegisterPage />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/login"
+            element={
+              <PrivateRoute redirect="/" authStatus="unknown">
+                <LoginPage />
+              </PrivateRoute>
+            }
+          ></Route>
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/recipes/:id" element={<RecipePage />} />
           <Route

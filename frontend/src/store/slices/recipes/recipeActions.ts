@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { $api } from "../../../http"
+import { $api, $apiWithoutToken } from "../../../http"
 import FormData from "form-data"
-import { IRecipe, initialRecipeState } from "./recipeSlice"
+import { IRecipe } from "./recipeSlice"
 import { AxiosError } from "axios"
 
 export interface RecipeRequestArgs {
@@ -18,9 +18,7 @@ export const addRecipe = createAsyncThunk(
     try {
       const response = await $api.post<IRecipe>("/recipes/", recipe)
 
-      const recipeResponse = response.data
-
-      console.log(recipeResponse)
+      return response.data
     } catch (e) {
       console.log(e)
     }
@@ -35,7 +33,7 @@ export const getRecipe = createAsyncThunk<
   "recipe/getRecipe",
   async ({ id }: RecipeRequestArgs, { rejectWithValue }) => {
     try {
-      const response = await $api.get<IRecipe>(`/recipes/${id}`)
+      const response = await $apiWithoutToken.get<IRecipe>(`/recipes/${id}`)
 
       const recipeResponse = response.data
 

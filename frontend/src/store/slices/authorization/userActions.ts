@@ -25,10 +25,13 @@ export const registerByEmail = createAsyncThunk<
         email,
         password,
       })
-      const tokenRequest = await $api.post<AuthResponse>("/token/", {
-        email,
-        password,
-      })
+      const tokenRequest = await $apiWithoutToken.post<AuthResponse>(
+        "/token/",
+        {
+          email,
+          password,
+        },
+      )
 
       const { access, refresh } = tokenRequest.data
       return { refreshToken: refresh, accessToken: access, email } as IUser
@@ -46,16 +49,20 @@ export const loginByEmail = createAsyncThunk(
   "loginByEmail",
   async ({ email, password }: requestArgs, { rejectWithValue }) => {
     try {
-      const tokenResponse = await $api.post<AuthResponse>("/token/", {
-        email,
-        password,
-      })
+      const tokenResponse = await $apiWithoutToken.post<AuthResponse>(
+        "/token/",
+        {
+          email,
+          password,
+        },
+      )
       if (tokenResponse.status !== 200) {
         return rejectWithValue("неверные данные пользователя")
       }
       const { access, refresh } = tokenResponse.data
       return { refreshToken: refresh, accessToken: access, email }
     } catch (e) {
+      console.log(e)
       return rejectWithValue({
         message: "Пользователь с такими данными не найден",
       })
