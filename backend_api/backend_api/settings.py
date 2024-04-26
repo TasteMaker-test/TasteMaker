@@ -3,11 +3,13 @@ import environ
 from datetime import timedelta
 from pathlib import Path
 
+
 root = environ.Path(__file__) - 2
 env = environ.Env()
 
 environ.Env.read_env(env.str(root(), '.env'))
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 """Директория для фикстур проекта. При выполниении команды -  python3 manage.py loaddata fixtures.json
 Django загрузит данные из fixtures.json и заполнит базу данных."""
@@ -48,6 +50,7 @@ INSTALLED_APPS += [
     'social_django',
     'drf_social_oauth2',
     'django_filters',
+    'corsheaders',
 ]
 
 # apps
@@ -59,12 +62,16 @@ INSTALLED_APPS += [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'backend_api.urls'
 
@@ -91,17 +98,24 @@ WSGI_APPLICATION = 'backend_api.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env.str('POSTGRES_DB'),
-        'USER': env.str('POSTGRES_USER'),
-        'PASSWORD': env.str('POSTGRES_PASSWORD'),
-        'HOST': env.str('POSTGRES_HOST'),
-        'PORT': env.int('POSTGRES_PORT'),
+if not DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env.str('POSTGRES_DB'),
+            'USER': env.str('POSTGRES_USER'),
+            'PASSWORD': env.str('POSTGRES_PASSWORD'),
+            'HOST': env.str('POSTGRES_HOST'),
+            'PORT': env.int('POSTGRES_PORT'),
+        }
     }
-}
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -129,6 +143,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
 
 #############################
 #       Auth_Google     #
