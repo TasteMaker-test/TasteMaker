@@ -1,6 +1,6 @@
-FROM node:20.12-slim
+FROM node:20-slim
 
-SHELL ["/bin/sh", "-c"]
+SHELL ["/bin/bash", "-c"]
 
 RUN mkdir -p /usr/src/TasteMaker/frontend/node_modules && chown -R node:node /usr/src/TasteMaker/frontend
 
@@ -12,7 +12,7 @@ RUN apt update && apt install netcat-openbsd -y
 
 USER node
 
-RUN npm install
+RUN npm install --force
 
 COPY --chown=node:node . .
 

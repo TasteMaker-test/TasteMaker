@@ -39,6 +39,7 @@ RUN mkdir /usr/src/TasteMaker/backend_api/static && \
     chown -R django:django /usr/src/TasteMaker/backend_api/ && \
     chmod 755 /usr/src/TasteMaker/backend_api/
 
+
 COPY --chown=django:django . .
 
 # Project initialization:
