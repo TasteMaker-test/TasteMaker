@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from .views import RecipeModelViewSet, IngredientModelView, MeasureModelView
 
 router = DefaultRouter()
-router.register(prefix='', viewset=RecipeModelViewSet, basename='recipe-model')
+router.register(prefix='recipes', viewset=RecipeModelViewSet, basename='recipe-model')
 
 urlpatterns = [
     path('', include(router.urls)),
