@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  tastemaker_back:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend_api/
+    restart: always
+    volumes:
+      - static_volume_back:/usr/src/TasteMaker/backend_api/static
+      - media_volume:/usr/src/TasteMaker/backend_api/media
+    networks:
+      - tastemaker-network
+  tastemaker_front:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend/
+    volumes:
+      - static_volume_front:/usr/src/TasteMaker/frontend/src/assets
+    depends_on:
+      - tastemaker_back
+    networks:
+      - tastemaker-network
+  nginx:
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx/
+    container_name: tastemaker_nginx
+    restart: always
+    volumes:
+      - static_volume_back:/usr/src/TasteMaker/backend_api/static
+      - static_volume_front:/usr/src/TasteMaker/frontend/src/assets
+      - media_volume:/usr/src/TasteMaker/backend_api/media
+    depends_on:
+      - tastemaker_back
+    ports:
+      - "80:80"
+    networks:
+       - tastemaker-network
+
+networks:
+  tastemaker-network:
+    driver: bridge
+
+
+volumes:
+  static_volume_back:
+  static_volume_front:
+  media_volume:
