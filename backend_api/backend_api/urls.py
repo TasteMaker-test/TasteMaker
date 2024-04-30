@@ -11,7 +11,7 @@ from backend_api import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
-    path('api/', include('recipes.urls')),
+    path('', include('recipes.urls')),
 
     # TOKENS
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

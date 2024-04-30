@@ -3,70 +3,161 @@
     "model": "recipes.measure",
     "pk": 1,
     "fields": {
-      "name": "мл."
+      "name": "по вкусу"
     }
  },
  {
     "model": "recipes.measure",
     "pk": 2,
     "fields": {
-      "name": "л."
+      "name": "г"
     }
  },
  {
     "model": "recipes.measure",
     "pk": 3,
     "fields": {
-      "name": "гр."
+      "name": "шт"
     }
  },
  {
     "model": "recipes.measure",
     "pk": 4,
     "fields": {
-      "name": "кг."
+      "name": "ст.л."
     }
  },
  {
     "model": "recipes.measure",
     "pk": 5,
     "fields": {
-      "name": "шт."
+      "name": "ч.л."
     }
  },
  {
     "model": "recipes.measure",
     "pk": 6,
     "fields": {
-      "name": "ч.л."
+      "name": "стакан"
     }
  },
  {
     "model": "recipes.measure",
     "pk": 7,
     "fields": {
-      "name": "ст.л."
+      "name": "мл"
     }
  },
  {
     "model": "recipes.measure",
     "pk": 8,
     "fields": {
-      "name": "щеп."
+      "name": "зубчик"
     }
  },
  {
     "model": "recipes.measure",
     "pk": 9,
     "fields": {
-      "name": "ст."
+      "name": "кг"
     }
  },
  {
     "model": "recipes.measure",
     "pk": 10,
     "fields": {
-      "name": "упак."
+      "name": "пучок"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 11,
+    "fields": {
+      "name": "банка"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 12,
+    "fields": {
+      "name": "л"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 13,
+    "fields": {
+      "name": "пакет"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 14,
+    "fields": {
+      "name": "пачка"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 15,
+    "fields": {
+      "name": "горстка"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 16,
+    "fields": {
+      "name": "упаковка"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 17,
+    "fields": {
+      "name": "щепотка"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 18,
+    "fields": {
+      "name": "ломтик"
+    }
+ },
+   {
+    "model": "recipes.measure",
+    "pk": 19,
+    "fields": {
+      "name": "вилок"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 20,
+    "fields": {
+      "name": "веточка"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 21,
+    "fields": {
+      "name": "долька"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 22,
+    "fields": {
+      "name": "бутылка"
+    }
+ },
+  {
+    "model": "recipes.measure",
+    "pk": 23,
+    "fields": {
+      "name": "капля"
     }
  }
 ]

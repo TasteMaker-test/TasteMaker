@@ -6,12 +6,12 @@ from rest_framework import viewsets, parsers, status
 from rest_framework.decorators import api_view, action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
-
 from rest_framework.response import Response
 
-from .filters import IngredientFilter
+# from .filters import IngredientFilter
 from .models import Recipe, Ingredient, Measure
-from .serializers import FormDataSerializer, RecipeSerializer, IngredientSerializer, MeasureSerializer
+from .serializers import IngredientSerializer, MeasureSerializer, RecipeListSerializer, \
+    RecipeSerializer, RecipeDetailSerializer, IngredientMeasureRelatedSerializer, IngredientMeasureSerializer
 
 
 @extend_schema_view(
@@ -20,7 +20,7 @@ class IngredientModelView(generics.ListAPIView):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_class = IngredientFilter
+    # filterset_class = IngredientFilter
 
 
 @extend_schema_view(
@@ -38,71 +38,40 @@ class MeasureModelView(generics.ListAPIView):
     partial_update=extend_schema(summary='Частичное редактирование рецепта', tags=['Рецепты']),
     destroy=extend_schema(summary='Удаление рецепта', tags=['Рецепты']),
 )
-class RecipeModelViewSet(viewsets.ModelViewSet):
+class RecipeCreateViewSet(generics.CreateAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+    # permission_classes = [IsAuthenticated]
 
-    def find_image_file(self, value, images):
-        for file in images:
-            if str(file) == value:
-                return file
-
-    def replace_filenames_with_files(self, data, images):
-        """Ищет все ключи image и заменяет имена файлов, реальными файлами из массива."""
-        for key, value in data.items():
-            if key == 'image':
-                file = self.find_image_file(value, images)
-                if not file:
-                    raise ValueError(value)
-                data[key] = file
-            elif isinstance(value, dict):
-                self.replace_filenames_with_files(value, images)
-            elif isinstance(value, list):
-                for item in value:
-                    if isinstance(item, dict):
-                        self.replace_filenames_with_files(item, images)
-        return data
-
-    def create(self, request, *args, **kwargs):
-
-        serializer = FormDataSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        data = serializer.validated_data
-
-        images = data.pop('files')
-        data = data.pop('json')
-
-        try:
-            data = self.replace_filenames_with_files(data, images)
-        except ValueError as e:
-            raise ValidationError(f"The file '{e}' was not found in the files array under the key 'files'.")
-
-        serializer = self.get_serializer(data=data)
+    def post(self, request, *args, **kwargs):
+        """Метод возвращает статус POST запроса"""
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(status=status.HTTP_201_CREATED)
+
+
+
+class RecipeModelViewSet(generics.ListAPIView):
+    """Возвращает список рецептов"""
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeListSerializer
+
+
+
+class RecipeDetailVeiwSet(generics.RetrieveUpdateDestroyAPIView):
+    """Возвращает/удалять/изменять все данные  рецепта"""
+    queryset = Recipe.objects.all()
+    serializer_class =  RecipeDetailSerializer
+
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
 
-        serializer = FormDataSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        data = serializer.validated_data
-
-        images = data.pop('files')
-        data = data.pop('json')
-
-        try:
-            data = self.replace_filenames_with_files(data, images)
-        except ValueError as e:
-            raise ValidationError(f"The file '{e}' was not found in the files array under the key 'files'.")
-
         instance = self.get_object()
 
-        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer = self.get_serializer(instance, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
@@ -111,14 +80,11 @@ class RecipeModelViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-    def get_permissions(self):
-        """Установка разных уровней доступа для методов"""
-        if self.request.method == 'GET':
-            permission_classes = [AllowAny]  # Метод GET доступен всем
-        else:
-            permission_classes = [IsAuthenticated]  # Остальные методы требуют авторизации
-        return [permission() for permission in permission_classes]
+    # def get_permissions(self):
+    #     """Установка разных уровней доступа для методов"""
+    #     if self.request.method == 'GET':
+    #         permission_classes = [AllowAny]  # Метод GET доступен всем
+    #     else:
+    #         permission_classes = [IsAuthenticated]  # Остальные методы требуют авторизации
+    #     return [permission() for permission in permission_classes]
 
-    def perform_create(self, serializer):
-        """Автоматически определяем user id и вставляем в соответствующее поле при создании рецепта"""
-        serializer.save(user=self.request.user)
