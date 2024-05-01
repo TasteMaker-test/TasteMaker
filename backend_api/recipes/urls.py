@@ -11,5 +11,5 @@ urlpatterns = [
     path('api/ingredients', IngredientModelView.as_view(), name='ingredients'),
     path('api/ingredients/measures', MeasureModelView.as_view(), name='measures'),
     path('api/recipes-list', RecipeModelViewSet.as_view(), name='recipes-list'),
-    path('api/recipes-detail/<int:pk>/', RecipeDetailVeiwSet.as_view(), name='recipes-detail'),
+    path('api/recipe-detail/<int:pk>/', RecipeDetailVeiwSet.as_view(), name='recipes-detail'),
 ]

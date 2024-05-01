@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 
+from .filters import IngredientFilter
 # from .filters import IngredientFilter
 from .models import Recipe, Ingredient, Measure
 from .serializers import IngredientSerializer, MeasureSerializer, RecipeListSerializer, \
@@ -20,7 +21,7 @@ class IngredientModelView(generics.ListAPIView):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = [DjangoFilterBackend]
-    # filterset_class = IngredientFilter
+    filterset_class = IngredientFilter
 
 
 @extend_schema_view(
@@ -32,16 +33,11 @@ class MeasureModelView(generics.ListAPIView):
 
 @extend_schema_view(
     create=extend_schema(summary='Создание рецепта', tags=['Рецепты']),
-    list=extend_schema(summary='Получение всех рецептов', tags=['Рецепты']),
-    retrieve=extend_schema(summary='Получение одного рецептов', tags=['Рецепты']),
-    update=extend_schema(summary='Полное редактирование рецепта', tags=['Рецепты']),
-    partial_update=extend_schema(summary='Частичное редактирование рецепта', tags=['Рецепты']),
-    destroy=extend_schema(summary='Удаление рецепта', tags=['Рецепты']),
 )
 class RecipeCreateViewSet(generics.CreateAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         """Метод возвращает статус POST запроса"""
@@ -52,16 +48,24 @@ class RecipeCreateViewSet(generics.CreateAPIView):
         return Response(status=status.HTTP_201_CREATED)
 
 
-
+@extend_schema_view(
+    list=extend_schema(summary='Создание рецепта', tags=['Рецепты']),
+)
+@extend_schema_view(list=extend_schema(summary='Получение всех рецептов', tags=['Рецепты']))
 class RecipeModelViewSet(generics.ListAPIView):
     """Возвращает список рецептов"""
     queryset = Recipe.objects.all()
     serializer_class = RecipeListSerializer
 
 
-
+@extend_schema_view(
+    retrieve=extend_schema(summary='Получение одного рецептов', tags=['Рецепты']),
+    update=extend_schema(summary='Полное редактирование рецепта', tags=['Рецепты']),
+    partial_update=extend_schema(summary='Частичное редактирование рецепта', tags=['Рецепты']),
+    destroy=extend_schema(summary='Удаление рецепта', tags=['Рецепты']),
+)
 class RecipeDetailVeiwSet(generics.RetrieveUpdateDestroyAPIView):
-    """Возвращает/удалять/изменять все данные  рецепта"""
+    """Возвращает/удаляет/изменяет все данные  рецепта"""
     queryset = Recipe.objects.all()
     serializer_class =  RecipeDetailSerializer
 
@@ -80,11 +84,11 @@ class RecipeDetailVeiwSet(generics.RetrieveUpdateDestroyAPIView):
 
         return Response(serializer.data)
 
-    # def get_permissions(self):
-    #     """Установка разных уровней доступа для методов"""
-    #     if self.request.method == 'GET':
-    #         permission_classes = [AllowAny]  # Метод GET доступен всем
-    #     else:
-    #         permission_classes = [IsAuthenticated]  # Остальные методы требуют авторизации
-    #     return [permission() for permission in permission_classes]
+    def get_permissions(self):
+        """Установка разных уровней доступа для методов"""
+        if self.request.method == 'GET':
+            permission_classes = [AllowAny]  # Метод GET доступен всем
+        else:
+            permission_classes = [IsAuthenticated]  # Остальные методы требуют авторизации
+        return [permission() for permission in permission_classes]
 

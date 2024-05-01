@@ -4,6 +4,7 @@ from rest_framework import serializers, fields
 from rest_framework.exceptions import ValidationError
 
 from .models import Ingredient, Measure, Step, Recipe, IngredientMeasure
+from services.services import validate_file_size, validate_len_data_list
 
 
 # ------------ FORM-DATA SERIALIZER ------------
@@ -21,7 +22,7 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = ['name']
 
-    def validate(self, data):
+    def validate_name(self, data):
         """Проверяем существование ингредиента с таким 'name' в бд."""
         ingredient_name = data.get("name")
         try:
@@ -29,6 +30,12 @@ class IngredientSerializer(serializers.ModelSerializer):
             return ingredient_obj
         except Exception:
             raise ValidationError(f"Ingredient with name: '{ingredient_name}' does not exist")
+
+
+    def validate_image(self, data):
+        """Проверяет изображение на занимаемый объем"""
+        if validate_file_size(data):
+            return data
 
     def to_representation(self, instance):
         # Получаем оригинальное представление
@@ -65,13 +72,13 @@ class MeasureSerializer(serializers.ModelSerializer):
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Step
-        fields = ['number_step', 'discription', 'image', ]
+        fields = ['step_number', 'step_discription', 'step_image', ]
 
 # ------------ IngredientMeasure SERIALIZER ------------
 class IngredientMeasureSerializer(serializers.ModelSerializer):
     class Meta:
         model = IngredientMeasure
-        fields = ['number_step_ingredients', 'ingredient', 'measure', 'quantity']
+        fields = ['ingredient', 'measure', 'quantity']
 
 
 class IngredientMeasureRelatedSerializer(serializers.ModelSerializer):
@@ -79,7 +86,7 @@ class IngredientMeasureRelatedSerializer(serializers.ModelSerializer):
     measure = serializers.SlugRelatedField(slug_field='name', read_only=True)
     class Meta:
         model = IngredientMeasure
-        fields = ['number_step_ingredients', 'ingredient', 'measure', 'quantity']
+        fields = ['ingredient', 'measure', 'quantity']
 
 
 # ------------ RECIPE SERIALIZER ------------
@@ -95,7 +102,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'owner',
                   'description',
                   'ingredients',
-                  'image',
+                  'main_image',
                   'cooking_instructions',
                   'cooking_time',
                   'steps',
@@ -118,11 +125,13 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def validate_len_ingredients(self, data):
         """Валидация кол-ва ингредиентов, мер, количества"""
-        print(len(data.get('ingredients')))
-        if len(data.get('ingredients')) > 1 or len(data.get('ingredients')) < 20:
-            return data
-        raise ValidationError('Количество шагов не должно быть меньше 1 и больше 20')
+        validate_len_data_list(data, key='ingredients', min_value=1, max_value=20)
+        return data
 
+    def validate_len_steps(self, data):
+        """Валидация кол-ва шагов"""
+        validate_len_data_list(data, key='steps', min_value=1, max_value=20)
+        return data
 
 # ------------ RECIPEList SERIALIZER ------------
 class RecipeListSerializer(serializers.ModelSerializer):
@@ -131,7 +140,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ("name",
-                  'image',
+                  'main_image',
                   )
 
 
@@ -148,12 +157,11 @@ class RecipeDetailSerializer(serializers.ModelSerializer):
                   "name",
                   'description',
                   'ingredients',
-                  'image',
+                  'main_image',
                   'cooking_instructions',
                   'cooking_time',
                   'steps',
                   )
-        validators=[]
 
 
 

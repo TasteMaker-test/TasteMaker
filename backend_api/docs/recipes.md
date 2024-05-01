@@ -21,20 +21,9 @@
 > требуется наличие [access-токена](./tokens.md#use-access_token) в заголовке авторизации  
 
 **Запрос**
+ 
+**`POST http://127.0.0.1:8000/api/new_recipes`**
 
-Формат запроса: _multipart/form-data_  
-**`POST http://127.0.0.1:8000/api/recipes/`**
-
-
-Список ключей:
-
-|  Ключ |  Тип  | Данные                        
-|------:|:-----:|-------------------------------|
-|  json | text  | json строка с данными рецепта |
-| files | array | массив файлов                 |
-
->В ключе `files` передается список файлов (главное фото рецепта и картинки к шагам, если нужно).  
->В json строке, где передается вся информация о рецепте, имена этих файлов прикрепляются по ключу `image`.  
 >Все прикрепленные файлы должны быть в формате `jpg`, `jpeg` или `png`. Максимальный размер - 2 мб.  
 
 Формат json строки:
@@ -42,34 +31,35 @@
 ```json
 {
   "name": "Название",
+  "owner": "user1@mail.ru",
   "description": "Описание",
   "cooking_instructions": "Инструкция по приготовлению",
   "cooking_time": "PT1H30M",
-  "image": "avatar.jpg",
+  "main_image": "avatar.jpg",
   "steps": [
     {
-      "order": 1,
-      "text": "почистить",
-      "image": "photo12.jpg"
+      "step_number": 1,
+      "step_discription": "почистить",
+      "step_image": "photo12.jpg"
     },
     {
-      "order": 2,
-      "text": "кипятить"
+      "step_number": 2,
+      "step_discription": "кипятить"
     },
     {
-      "order": 3,
-      "text": "есть"
+      "step_number": 3,
+      "step_discription": "есть"
     }
   ],
   "ingredients": [
     {
-      "name": "Лягушачьи лапки",
-      "amount": "300",
+      "ingredient": "Лягушачьи лапки",
+      "quantity": "300",
       "measure": "мл."
     },
     {
-      "name": "Телятина",
-      "amount": "500",
+      "ingredient": "Телятина",
+      "quantity": "500",
       "measure": "гр."
     }
   ]
@@ -77,12 +67,12 @@
 ``` 
 
 >**steps**  
-> В списке должен быть указан как минимум один шаг, количество шагов не ограничено.  
-> В ключе `image` указывается имя файла, переданного в массиве основного запроса по ключу `files`.  
-> Ключ `image` можно не указывать, если у шага нет изображения. 
+> В списке должен быть указан как минимум один шаг, но не более 20.  
+> В ключе `step_image` указывается имя файла.  
+ 
 
 >**ingredients**  
-> В списке должен быть указан как минимум один ингредиент.  
+> В списке должен быть указан как минимум один ингредиент, но не более 20.  
 > В поле `name` и `measure` т.е. имя ингредиента и единица измерения, нужно указывать, только существующие в базе данных.  
 >Получить [список ингредиентов](#get_all_ingredients) и [список единиц измерения](#get_all_measures).
 
@@ -102,31 +92,31 @@
   "description": "Описание",
   "cooking_instructions": "Инструкция по приготовлению",
   "cooking_time": "01:30:00",
-  "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
+  "main_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
   "steps": [
     {
-      "order": 1,
-      "text": "почистить",
-      "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
+      "step_number": 1,
+      "step_discription": "почистить",
+      "step_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
     },
     {
-      "order": 2,
-      "text": "кипятить"
+      "step_number": 2,
+      "step_discription": "кипятить"
     },
     {
-      "order": 3,
-      "text": "есть"
+      "step_number": 3,
+      "step_discription": "есть"
     }
   ],
   "ingredients": [
     {
-      "name": "Лягушачьи лапки",
-      "amount": "300",
+      "ingredient": "Лягушачьи лапки",
+      "quantity": "300",
       "measure": "мл."
     },
     {
-      "name": "Телятина",
-      "amount": "500",
+      "ingredient": "Телятина",
+      "quantity": "500",
       "measure": "гр."
     }
   ]
@@ -146,9 +136,9 @@
 Запрос к серверу и ответ идентичен [созданию рецепта.](#create_recipe)  
 Разница в том, что нужно указать `id` рецепта в адресе:
 
-`PUT http://127.0.0.1:8000/api/recipes/{ID Рецепта}/`
+`PUT http://127.0.0.1:8000/api/recipe-detail/{ID Рецепта}/`
 Например:  
-`PUT http://127.0.0.1:8000/api/recipes/1/`
+`PUT http://127.0.0.1:8000/api/recipe-detail/1/`
 
 В запросе необходимо указать ВСЕ поля, так же как при создании рецепта.
 
@@ -167,9 +157,9 @@
 Запрос к серверу и ответ идентичен [созданию рецепта.](#create_recipe)  
 Разница в том, что нужно указать `id` рецепта в адресе:
 
-`PATCH http://127.0.0.1:8000/api/recipes/{ID Рецепта}/`  
+`PATCH http://127.0.0.1:8000/api/recipe-detail/{ID Рецепта}/`  
 Например:  
-`PATCH http://127.0.0.1:8000/api/recipes/1/`
+`PATCH http://127.0.0.1:8000/api/recipe-detail/1/`
 
 В запросе можно указать только те поля, которые необходимо изменить.
 Например, `json` строка может выглядеть так:
@@ -179,8 +169,8 @@
     "description": "Измененное описание",
     "steps": [
         {
-            "order": 2,
-            "text": "Измененный текст для шага 2"
+            "step_number": 2,
+            "step_discription": "Измененный текст для шага 2"
         }]
 }
 ```
@@ -197,9 +187,9 @@
 ### Просмотр одного рецепта 
 
 **Запрос**  
-`GET http://127.0.0.1:8000/api/recipes/{ID Рецепта}/`  
+`GET http://127.0.0.1:8000/api/recipe-detail/{ID Рецепта}/`  
 Например:  
-`GET http://127.0.0.1:8000/api/recipes/1/`
+`GET http://127.0.0.1:8000/api/recipe-detail/1/`
 
 **Ответ**
 
@@ -210,31 +200,31 @@
   "description": "Описание",
   "cooking_instructions": "Инструкция по приготовлению",
   "cooking_time": "01:30:00",
-  "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
+  "main_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
   "steps": [
     {
-      "order": 1,
-      "text": "почистить",
-      "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
+      "step_number": 1,
+      "step_discription": "почистить",
+      "step_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
     },
     {
-      "order": 2,
-      "text": "кипятить"
+      "step_number": 2,
+      "step_discription": "кипятить"
     },
     {
-      "order": 3,
-      "text": "есть"
+      "step_number": 3,
+      "step_discription": "есть"
     }
   ],
   "ingredients": [
     {
-      "name": "Лягушачьи лапки",
-      "amount": "300",
+      "ingredient": "Лягушачьи лапки",
+      "quantity": "300",
       "measure": "мл."
     },
     {
-      "name": "Телятина",
-      "amount": "500",
+      "ingredient": "Телятина",
+      "quantity": "500",
       "measure": "гр."
     }
   ]
@@ -250,7 +240,7 @@
 ### Просмотр всех рецептов
 
 **Запрос**   
-`GET http://127.0.0.1:8000/api/recipes/`
+`GET http://127.0.0.1:8000/api/recipes-list/`
 
 **Ответ**
 
@@ -261,31 +251,31 @@
   "description": "Описание",
   "cooking_instructions": "Инструкция по приготовлению",
   "cooking_time": "01:30:00",
-  "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
+  "main_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
   "steps": [
     {
-      "order": 1,
-      "text": "почистить",
-      "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
+      "step_number": 1,
+      "step_discription": "почистить",
+      "step_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
     },
     {
-      "order": 2,
-      "text": "кипятить"
+      "step_number": 2,
+      "step_discription": "кипятить"
     },
     {
-      "order": 3,
-      "text": "есть"
+      "step_number": 3,
+      "step_discription": "есть"
     }
   ],
   "ingredients": [
     {
-      "name": "Лягушачьи лапки",
-      "amount": "300",
+      "ingredient": "Лягушачьи лапки",
+      "quantity": "300",
       "measure": "мл."
     },
     {
-      "name": "Телятина",
-      "amount": "500",
+      "ingredient": "Телятина",
+      "quantity": "500",
       "measure": "гр."
     }
   ]
@@ -295,31 +285,31 @@
   "description": "Описание",
   "cooking_instructions": "Инструкция по приготовлению",
   "cooking_time": "01:30:00",
-  "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
+  "main_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png",
   "steps": [
     {
-      "order": 1,
-      "text": "почистить",
-      "image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
+      "step_number": 1,
+      "step_discription": "почистить",
+      "step_image": "http://127.0.0.1:8000/media/images/b576fc4f102d4e31b75d91a6633f3f87.png"
     },
     {
-      "order": 2,
-      "text": "кипятить"
+      "step_number": 2,
+      "step_discription": "кипятить"
     },
     {
-      "order": 3,
-      "text": "есть"
+      "step_number": 3,
+      "step_discription": "есть"
     }
   ],
   "ingredients": [
     {
-      "name": "Лягушачьи лапки",
-      "amount": "300",
+      "ingredient": "Лягушачьи лапки",
+      "quantity": "300",
       "measure": "мл."
     },
     {
-      "name": "Телятина",
-      "amount": "500",
+      "ingredient": "Телятина",
+      "quantity": "500",
       "measure": "гр."
     }
   ]
@@ -337,9 +327,9 @@
 **Запрос**
 > требуется наличие [access-токена](./tokens.md#use-access_token) в заголовке авторизации.
 
-`DELETE http://127.0.0.1:8000/api/recipes/{ID Рецепта}/`  
+`DELETE http://127.0.0.1:8000/api/recipe-detail/{ID Рецепта}/`  
 Например:  
-`DELETE http://127.0.0.1:8000/api/recipes/1/`  
+`DELETE http://127.0.0.1:8000/api/recipe-detail/1/`  
 
 **Ответ**
 
@@ -359,7 +349,7 @@
 
 **Запрос**
 
-`GET http://127.0.0.1:8000/api/recipes/ingredients/`   
+`GET http://127.0.0.1:8000/api/ingredients/`   
 
 **Ответ**
 
@@ -383,8 +373,8 @@
 
 **Запрос**
 
-`GET http://127.0.0.1:8000/api/recipes/ingredients/{СИМВОЛЫ_ДЛЯ_ПОИСКА}`  
-Например `GET http://127.0.0.1:8000/api/recipes/ingredients/ля`  
+`GET http://127.0.0.1:8000/api/ingredients/{СИМВОЛЫ_ДЛЯ_ПОИСКА}`  
+Например `GET http://127.0.0.1:8000/api/ingredients/ля`  
 
 **Ответ**
 
@@ -406,7 +396,7 @@
 
 **Запрос**
 
-`GET http://127.0.0.1:8000/api/recipes/ingredients/measures/`   
+`GET http://127.0.0.1:8000/api/api/ingredients/measures/`   
 
 **Ответ**
 
