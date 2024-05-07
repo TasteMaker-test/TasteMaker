@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import generics, status, permissions
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from .models import User
@@ -15,8 +16,6 @@ class UserCreateView(generics.CreateAPIView):
     serializer_class = RegistrationSerializer
     permission_classes = [permissions.AllowAny]  # Создать пользователя могут не авторизированные пользователи
 
-
-
     def post(self, request, *args, **kwargs):
         """Метод возвращает статус POST запроса"""
         serializer = self.get_serializer(data=request.data)
@@ -24,6 +23,7 @@ class UserCreateView(generics.CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(status=status.HTTP_201_CREATED)
+
 
 @extend_schema_view(
     get=extend_schema(summary='Получение данных пользователя', tags=['Аутентификация & Авторизация']),
@@ -33,6 +33,7 @@ class UserCreateView(generics.CreateAPIView):
 class UserRUDView(generics.RetrieveUpdateAPIView):
     """Представление модели Пользователя"""
     queryset = User.objects.all()
+    parser_classes = (MultiPartParser,)
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -43,7 +44,6 @@ class UserRUDView(generics.RetrieveUpdateAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return UserUpdateSerializer
         return UserSerializer
-
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -56,4 +56,3 @@ class UserRUDView(generics.RetrieveUpdateAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(status=status.HTTP_201_CREATED)
-

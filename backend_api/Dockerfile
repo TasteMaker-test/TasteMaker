@@ -34,10 +34,10 @@ RUN useradd -rms /bin/bash django && chmod 777 /opt /run
 # Copy only requirements, to cache them in docker layer
 WORKDIR /usr/src/TasteMaker/backend_api/
 
-RUN mkdir /usr/src/TasteMaker/backend_api/static && \
-    mkdir /usr/src/TasteMaker/backend_api/media && \
-    chown -R django:django /usr/src/TasteMaker/backend_api/ && \
-    chmod 755 /usr/src/TasteMaker/backend_api/
+RUN mkdir /usr/src/TasteMaker/settings/static && \
+    mkdir /usr/src/TasteMaker/settings/media && \
+    chown -R django:django /usr/src/TasteMaker/settings/ && \
+    chmod 755 /usr/src/TasteMaker/settings/
 
 
 COPY --chown=django:django . .

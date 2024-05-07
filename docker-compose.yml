@@ -21,8 +21,8 @@ services:
     depends_on:
       - postgres_db
     volumes:
-      - static_volume_back:/usr/src/TasteMaker/backend_api/static
-      - media_volume:/usr/src/TasteMaker/backend_api/media
+      - static_volume_back:/usr/src/TasteMaker/settings/static
+      - media_volume:/usr/src/TasteMaker/settings/media
     env_file:
       - ./backend_api/.env
     networks:
@@ -44,9 +44,9 @@ services:
     container_name: tastemaker_nginx
     restart: always
     volumes:
-      - static_volume_back:/usr/src/TasteMaker/backend_api/static
+      - static_volume_back:/usr/src/TasteMaker/settings/static
       - static_volume_front:/usr/src/TasteMaker/frontend/src/assets
-      - media_volume:/usr/src/TasteMaker/backend_api/media
+      - media_volume:/usr/src/TasteMaker/settings/media
     depends_on:
       - tastemaker_back
     env_file:

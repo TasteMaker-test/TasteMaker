@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
-from backend_api import settings
+from settings import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -16,12 +16,13 @@ class Recipe(models.Model):
                               on_delete=models.CASCADE,
                               related_name='user_recipe')  # при удалении данного юзера, удалятся все, связанные с ним рецепты.
     description = models.TextField(max_length=1500)
-    main_image = models.ImageField(upload_to=generate_filename,
-                                   validators=[
-                                       FileExtensionValidator(['png', 'jpg', 'jpeg']),
-                                       validate_file_size])
+    # main_image = models.ImageField(upload_to=generate_filename,
+    #                                validators=[
+    #                                    FileExtensionValidator(['png', 'jpg', 'jpeg']),
+    #                                    validate_file_size])
     cooking_instructions = models.TextField(max_length=1500)
-    cooking_time = models.DurationField(default=timedelta(minutes=0))
+    # cooking_time = models.DurationField(default=timedelta(minutes=0))
+    cooking_time = models.IntegerField()
     published_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -29,10 +30,10 @@ class Step(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
     step_number = models.PositiveIntegerField(validators=[MinValueValidator(limit_value=1),
                                                           MaxValueValidator(limit_value=20)])
-    step_image = models.ImageField(upload_to=generate_filename,
-                                   validators=[
-                                       FileExtensionValidator(['png', 'jpg', 'jpeg']),
-                                       validate_file_size])
+    # step_image = models.ImageField(upload_to=generate_filename,
+    #                                validators=[
+    #                                    FileExtensionValidator(['png', 'jpg', 'jpeg']),
+    #                                    validate_file_size])
     step_discription = models.TextField(max_length=150)
 
     class Meta:

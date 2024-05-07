@@ -3,7 +3,7 @@
 > Загрузка проекта
 ```bash
 https://github.com/Danspb77/TasteMaker_code.git
-cd TasteMaker_code/backend_api
+cd TasteMaker_code/settings
 ```
 ## Установка зависимостей
 
@@ -45,7 +45,7 @@ python manage.py runserver
 Для локальной разработки бэкэнда(из TasteMaker_code)
 
 ```bash
-docker-compose -f docker-compose.yml --env-file ./backend_api/.env up -d --build
+docker-compose -f docker-compose.yml --env-file ./settings/.env up -d --build
 ```
 ## Архитектура приложения
 

@@ -72,7 +72,7 @@ class MeasureSerializer(serializers.ModelSerializer):
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Step
-        fields = ['step_number', 'step_discription', 'step_image', ]
+        fields = ['step_number', 'step_discription', ]
 
 # ------------ IngredientMeasure SERIALIZER ------------
 class IngredientMeasureSerializer(serializers.ModelSerializer):
@@ -102,7 +102,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'owner',
                   'description',
                   'ingredients',
-                  'main_image',
+                  # 'main_image',
                   'cooking_instructions',
                   'cooking_time',
                   'steps',
@@ -113,7 +113,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         ingredients_data = validated_data.pop("ingredients")
         steps_data = validated_data.pop('steps')
 
-        recipe = super().create(validated_data)
+        recipe = Recipe.create(**validated_data)
 
         for step_data in steps_data:
             Step.objects.create(recipe=recipe, **step_data)

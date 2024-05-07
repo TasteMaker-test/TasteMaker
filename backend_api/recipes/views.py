@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import viewsets, parsers, status
 from rest_framework.decorators import api_view, action
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
@@ -37,10 +38,12 @@ class MeasureModelView(generics.ListAPIView):
 class RecipeCreateViewSet(generics.CreateAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser,)
 
     def post(self, request, *args, **kwargs):
         """Метод возвращает статус POST запроса"""
+        print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -67,8 +70,7 @@ class RecipeModelViewSet(generics.ListAPIView):
 class RecipeDetailVeiwSet(generics.RetrieveUpdateDestroyAPIView):
     """Возвращает/удаляет/изменяет все данные  рецепта"""
     queryset = Recipe.objects.all()
-    serializer_class =  RecipeDetailSerializer
-
+    serializer_class = RecipeDetailSerializer
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -91,4 +93,3 @@ class RecipeDetailVeiwSet(generics.RetrieveUpdateDestroyAPIView):
         else:
             permission_classes = [IsAuthenticated]  # Остальные методы требуют авторизации
         return [permission() for permission in permission_classes]
-

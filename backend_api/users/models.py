@@ -41,9 +41,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(
         verbose_name="email address",
-        max_length=100,
-        unique=True,
-        validators=[RegexValidator(r"^[-a-zA-Z0-9_]{3,}")]#Минимальное кол-во символов 3(до "@")
+        max_length=192,
+        unique=True
     )
     password = models.CharField(max_length=100, validators=[MinLengthValidator(limit_value=8),
                                                             MaxLengthValidator(limit_value=64)])
