@@ -9,6 +9,8 @@ services:
     volumes:
       - static_volume_back:/usr/src/TasteMaker/backend_api/static
       - media_volume:/usr/src/TasteMaker/backend_api/media
+    ports:
+      - "8000:8000"
     networks:
       - tastemaker-network
   tastemaker_front:
