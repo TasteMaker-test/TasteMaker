@@ -46,7 +46,7 @@
   "email": "user@example.com",
   "about_me": "string",
   "at_registration": "2024-05-01T05:05:41.008Z",
-  "photo": "string",
+  "photo": "photo.jpg",
   "nickname": "Пользователь"
 }
 ```
@@ -57,10 +57,11 @@
 ## Редактирование пользователя.
 
 Для редактирования данных пользователя необходимо сделать запрос 
-`GET http://127.0.0.1:8000/api/user-detail/{ID пользователя}/`
+`PUT, PATCH http://127.0.0.1:8000/api/user-detail/{ID пользователя}/`
 
 > требуется наличие [access-токена](./tokens.md#use-access_token) в заголовке авторизации
 
+Формат запроса: multipart/form-data
 **Ответ**
 
 ```json

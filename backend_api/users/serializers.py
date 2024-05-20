@@ -21,6 +21,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         exclude = ['is_active', 'is_admin', 'is_superuser', 'groups', 'user_permissions', ]
 
+
+
+
     def create(self, validated_data):
         """Создаем хешируемый пароль пользователя"""
         password = validated_data.pop("password")

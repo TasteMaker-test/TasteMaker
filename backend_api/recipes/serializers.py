@@ -31,12 +31,6 @@ class IngredientSerializer(serializers.ModelSerializer):
         except Exception:
             raise ValidationError(f"Ingredient with name: '{ingredient_name}' does not exist")
 
-
-    def validate_image(self, data):
-        """Проверяет изображение на занимаемый объем"""
-        if validate_file_size(data):
-            return data
-
     def to_representation(self, instance):
         # Получаем оригинальное представление
         ret = super().to_representation(instance)
@@ -51,7 +45,7 @@ class MeasureSerializer(serializers.ModelSerializer):
         model = Measure
         fields = ['name']
 
-    def validate(self, data):
+    def validate_name(self, data):
         """Проверяем существование measure с таким 'name' в бд."""
         measure_name = data.get("name")
         try:
@@ -72,7 +66,7 @@ class MeasureSerializer(serializers.ModelSerializer):
 class StepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Step
-        fields = ['step_number', 'step_discription', ]
+        fields = ['step_number', 'step_discription', 'step_image']
 
 # ------------ IngredientMeasure SERIALIZER ------------
 class IngredientMeasureSerializer(serializers.ModelSerializer):
@@ -102,7 +96,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'owner',
                   'description',
                   'ingredients',
-                  # 'main_image',
+                  'main_image',
                   'cooking_instructions',
                   'cooking_time',
                   'steps',
@@ -113,7 +107,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         ingredients_data = validated_data.pop("ingredients")
         steps_data = validated_data.pop('steps')
 
-        recipe = Recipe.create(**validated_data)
+        recipe = Recipe.objects.create(**validated_data)
 
         for step_data in steps_data:
             Step.objects.create(recipe=recipe, **step_data)
@@ -155,6 +149,7 @@ class RecipeDetailSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ("id",
                   "name",
+                  'owner',
                   'description',
                   'ingredients',
                   'main_image',
