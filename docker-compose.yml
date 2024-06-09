@@ -33,6 +33,8 @@ services:
       context: ./frontend/
     volumes:
       - static_volume_front:/usr/src/TasteMaker/frontend/src/assets
+      - ./frontend:/usr/src/TasteMaker/frontend
+      - /usr/src/TasteMaker/frontend/node_modules
     depends_on:
       - tastemaker_back
     networks:
