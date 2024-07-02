@@ -50,9 +50,9 @@ class ValidPassword:
     ]
 
     def __init__(self, value: str):
-        self.value = self.validate_passwod(value)
+        self.value = self.validate_password(value)
 
-    def validate_passwod(self, value) -> str:
+    def validate_password(self, value) -> str:
 
         for pattern in self.regex:
             match = re.search(rf"{pattern}", value)
@@ -81,4 +81,4 @@ class ValidateEmail:
         match = re.match(rf'{regex}', email)
         if match:
             return email
-        raise ValidationError('Неверный пароль')
+        raise ValidationError('Неверный почтовый адрес')
