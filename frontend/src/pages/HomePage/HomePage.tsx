@@ -19,10 +19,7 @@ export const HomePage = () => {
 
   return (
     <div>
-      <Ingredients
-        label="Ингредиенты"
-        placeHolder="Введите название ингредиента..."
-      />
+      <Ingredients />
       <img
         src={mockMainBanner}
         alt="Изображение блюда"
