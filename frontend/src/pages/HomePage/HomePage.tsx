@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { $apiWithoutToken } from "../../http"
 import { IRecipe } from "../../store/slices/recipes/recipeSlice.ts"
 import { useAppSelector } from "../../hooks/reduxHooks.ts"
-import Selector from "../../components/UI/Selector/Selector.tsx"
+import Ingredients from "../../components/UI/Selector/Ingredients.tsx"
 
 export const HomePage = () => {
   const [recipes, setRecipes] = useState<IRecipe[]>([])
@@ -19,9 +19,9 @@ export const HomePage = () => {
 
   return (
     <div>
-      <Selector
-        label="Ингридиенты"
-        placeHolder="Введите название ингридиента"
+      <Ingredients
+        label="Ингредиенты"
+        placeHolder="Введите название ингредиента..."
       />
       <img
         src={mockMainBanner}
