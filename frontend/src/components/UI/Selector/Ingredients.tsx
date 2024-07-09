@@ -10,6 +10,12 @@ const animatedComponents = makeAnimated()
 // https://react-select.com/props - документация библиотеки react-select
 // большая часть компонента написана с его использованием
 
+// интерфейс для запроса на сервер
+interface IngredientInterface {
+  id: number
+  name: string
+}
+
 const Ingredients: React.FC = () => {
   const symbolAlertRef = useRef<HTMLSpanElement>(null)
 
@@ -17,12 +23,14 @@ const Ingredients: React.FC = () => {
   const promiseOptions = (inputValue: string) =>
     new Promise<object[]>((resolve, reject) => {
       axios
-        .get(`http://localhost/api/ingredients?ingredient_name=${inputValue}`)
+        .get(`http://localhost/api/ingredients?ingredient_name=${inputValue}`) //API откуда берутся ингредиенты
         .then((response) => {
-          const transfomedData = response.data.map((e: string, i: number) => ({
-            value: i,
-            label: e,
-          }))
+          const transfomedData = response.data.map(
+            (e: IngredientInterface) => ({
+              value: e.id,
+              label: e.name,
+            }),
+          )
           resolve(transfomedData)
         })
         .catch((err) => reject(err))
