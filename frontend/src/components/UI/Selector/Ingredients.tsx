@@ -3,7 +3,6 @@ import AsyncSelect from "react-select/async"
 import makeAnimated from "react-select/animated"
 import styles from "./Ingredients.module.css"
 import axios from "axios"
-import { MultiValue } from "react-select"
 
 // анимация селектора
 const animatedComponents = makeAnimated()
@@ -11,7 +10,7 @@ const animatedComponents = makeAnimated()
 // https://react-select.com/props - документация библиотеки react-select
 // большая часть компонента написана с его использованием
 
-const Ingredients: React.FC = (props) => {
+const Ingredients: React.FC = () => {
   const symbolAlertRef = useRef<HTMLSpanElement>(null)
 
   //функция подтягивающая с сервера нужные варианты исходя из ввода пользователя
@@ -36,16 +35,11 @@ const Ingredients: React.FC = (props) => {
     if (!regex.test(e)) {
       symbolAlertRef.current?.classList.add(styles.symbol__alert_active)
 
-      alert("Пожалуйста, используйте буквы кирилицы")
+      alert("Включена латинская раскладка клавиатуры")
 
       setTimeout(() => {
         symbolAlertRef.current?.classList.remove(styles.symbol__alert_active)
       }, 2000)
-
-      // убрать фокус с инпута. Но при этом последний введенный символ остаётся в поле ввода
-      // document.activeElement instanceof HTMLInputElement
-      //   ? document.activeElement.blur()
-      //   : null
     }
   }
 
@@ -57,17 +51,18 @@ const Ingredients: React.FC = (props) => {
       </label>
       <AsyncSelect
         // Массив значений мультиселектора
-        onChange={(e: MultiValue<unknown>) => console.log(e)}
+        onChange={(e) => console.log(e)}
         // -------------------------------
         onInputChange={symbolValidation}
         loadOptions={promiseOptions}
         loadingMessage={() => "Загрузка..."}
         noOptionsMessage={() => "В базе нет подходящего ингридиента..."}
         cacheOptions={true}
+        isClearable={true}
+        backspaceRemovesValue={true}
         hideSelectedOptions={true}
         closeMenuOnSelect={true}
         components={animatedComponents}
-        isMulti={true}
         required={true}
         placeholder="Введите название ингредиента"
       />
