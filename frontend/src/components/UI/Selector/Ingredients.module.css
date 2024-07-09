@@ -1,0 +1,38 @@
+.selector__container {
+  position: relative;
+  width: 350px;
+  height: 75px;
+
+  margin-bottom: 15px;
+}
+
+.selector__container label {
+  font-size: 20px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.selector__container strong {
+  color: red;
+  margin-right: 3px;
+}
+
+.selector__container span {
+  position: absolute;
+  font-weight: 400;
+  color: transparent;
+  font-size: 12px;
+  margin-top: 3px;
+  transition: all 0.5s ease;
+}
+
+.symbol__alert_active {
+  position: absolute;
+  display: contents !important;
+  font-weight: 400;
+  color: #e05f5f !important;
+  font-size: 12px;
+  margin-top: 3px;
+  transition: all 0.5s ease;
+}
