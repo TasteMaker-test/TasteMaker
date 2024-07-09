@@ -13,7 +13,9 @@ const TextInput: React.FC<TextInputProps> = (props) => {
   // Функция валидатор значения инпута
   const valueValidation = (e: FormEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value
-    if (inputValue.length > 5 || !/^\d+$/.test(inputValue)) {
+    const regex = /^[а-яА-ЯёЁ\s]*$/
+
+    if (inputValue.length > 5 || regex.test(inputValue)) {
       e.currentTarget.value = e.currentTarget.value.slice(0, -1)
 
       symbolAlertRef.current?.classList.add(styles.symbol__alert_active)
@@ -21,6 +23,10 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         symbolAlertRef.current?.classList.remove(styles.symbol__alert_active)
       }, 2000)
     }
+
+    //Значение инпута
+    console.log(Number.parseInt(e.currentTarget.value))
+    // --------------
   }
 
   return (
@@ -36,7 +42,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         required={props.required ? true : false}
         type="number"
         placeholder="Введите количество"
-        min={+1}
+        min={+0.1}
       />
       <span ref={symbolAlertRef}>Можно ввести численных знаков: от 1 до 5</span>
     </div>
