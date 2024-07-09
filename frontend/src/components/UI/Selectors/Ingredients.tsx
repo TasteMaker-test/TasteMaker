@@ -10,13 +10,19 @@ const animatedComponents = makeAnimated()
 // https://react-select.com/props - документация библиотеки react-select
 // большая часть компонента написана с его использованием
 
+// Интерфейс пропсов компонента
+interface IngredientsProps {
+  required?: boolean
+  id: string
+}
+
 // интерфейс для запроса на сервер
 interface IngredientInterface {
   id: number
   name: string
 }
 
-const Ingredients: React.FC = () => {
+const Ingredients: React.FC<IngredientsProps> = (props) => {
   const symbolAlertRef = useRef<HTMLSpanElement>(null)
 
   //функция подтягивающая с сервера нужные варианты исходя из ввода пользователя
@@ -53,11 +59,12 @@ const Ingredients: React.FC = () => {
 
   return (
     <div className={styles.selector__container}>
-      <label>
+      <label htmlFor={props.id}>
         <strong>*</strong>
         Ингредиенты
       </label>
       <AsyncSelect
+        id={props.id}
         // Массив значений мультиселектора
         onChange={(e) => console.log(e)}
         // -------------------------------
@@ -71,7 +78,7 @@ const Ingredients: React.FC = () => {
         hideSelectedOptions={true}
         closeMenuOnSelect={true}
         components={animatedComponents}
-        required={true}
+        required={props.required ? true : false}
         placeholder="Введите название ингредиента"
       />
       <span ref={symbolAlertRef}>
