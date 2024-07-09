@@ -20,7 +20,7 @@ class FormDataSerializer(serializers.Serializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ['name']
+        fields = ['id', 'name']
 
     def validate_name(self, data):
         """Проверяем существование ингредиента с таким 'name' в бд."""
@@ -31,12 +31,12 @@ class IngredientSerializer(serializers.ModelSerializer):
         except Exception:
             raise ValidationError(f"Ingredient with name: '{ingredient_name}' does not exist")
 
-    def to_representation(self, instance):
-        # Получаем оригинальное представление
-        ret = super().to_representation(instance)
-
-        # удаляем ключ 'name' и возвращаем только его значение
-        return ret.pop('name')
+    # def to_representation(self, instance):
+    #     # Получаем оригинальное представление
+    #     ret = super().to_representation(instance)
+    #
+    #     # удаляем ключ 'name' и возвращаем только его значение
+    #     return ret.pop('name')
 
 
 # ------------ MEASURE SERIALIZER ------------
