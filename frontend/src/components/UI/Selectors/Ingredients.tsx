@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import AsyncSelect from "react-select/async"
 import makeAnimated from "react-select/animated"
 import styles from "./Ingredients.module.css"
@@ -10,14 +10,21 @@ const animatedComponents = makeAnimated()
 // https://react-select.com/props - документация библиотеки react-select
 // большая часть компонента написана с его использованием
 
+// Интерфейс пропсов компонента
+interface IngredientsProps {
+  required?: boolean
+  id: string
+}
+
 // интерфейс для запроса на сервер
 interface IngredientInterface {
   id: number
   name: string
 }
 
-const Ingredients: React.FC = () => {
+const Ingredients: React.FC<IngredientsProps> = (props) => {
   const symbolAlertRef = useRef<HTMLSpanElement>(null)
+  const [searchInputValue, setSearchInputValue] = useState<string>("")
 
   //функция подтягивающая с сервера нужные варианты исходя из ввода пользователя
   const promiseOptions = (inputValue: string) =>
@@ -39,11 +46,14 @@ const Ingredients: React.FC = () => {
   // Функция валидации ввода символов (Только кирилица)
   const symbolValidation = (e: string) => {
     const regex = /^[а-яА-ЯёЁ\s]*$/
-
+    setSearchInputValue(e)
     if (!regex.test(e)) {
       symbolAlertRef.current?.classList.add(styles.symbol__alert_active)
 
-      alert("Включена латинская раскладка клавиатуры")
+      // убрать фокус с инпута
+      document.activeElement instanceof HTMLInputElement
+        ? document.activeElement.blur()
+        : null
 
       setTimeout(() => {
         symbolAlertRef.current?.classList.remove(styles.symbol__alert_active)
@@ -53,12 +63,14 @@ const Ingredients: React.FC = () => {
 
   return (
     <div className={styles.selector__container}>
-      <label>
+      <label htmlFor={props.id}>
         <strong>*</strong>
         Ингредиенты
       </label>
       <AsyncSelect
-        // Массив значений мультиселектора
+        inputValue={searchInputValue}
+        id={props.id}
+        //Значение селектора
         onChange={(e) => console.log(e)}
         // -------------------------------
         onInputChange={symbolValidation}
@@ -71,7 +83,7 @@ const Ingredients: React.FC = () => {
         hideSelectedOptions={true}
         closeMenuOnSelect={true}
         components={animatedComponents}
-        required={true}
+        required={props.required ? true : false}
         placeholder="Введите название ингредиента"
       />
       <span ref={symbolAlertRef}>
