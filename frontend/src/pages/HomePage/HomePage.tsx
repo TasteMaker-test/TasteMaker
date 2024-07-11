@@ -21,10 +21,6 @@ export const HomePage = () => {
 
   return (
     <div>
-      <Ingredients required={true} id="ingrs" />
-      <TextInput id="textInp" required={true} />
-      <UnitInput required={true} id="unitInput" />
-
       <img
         src={mockMainBanner}
         alt="Изображение блюда"
