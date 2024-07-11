@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 import AsyncSelect from "react-select/async"
 import makeAnimated from "react-select/animated"
-import styles from "./Ingredients.module.css"
+import styles from "./Selectors.module.css"
 import axios from "axios"
 
 // анимация селектора

@@ -6,6 +6,10 @@
   margin-bottom: 15px;
 }
 
+.unitInput__container {
+  width: 190px !important;
+}
+
 .selector__container label {
   font-size: 20px;
   font-weight: 600;
@@ -21,6 +25,7 @@
 .selector__container span {
   position: absolute;
   font-weight: 400;
+  cursor: default;
   color: transparent;
   font-size: 12px;
   margin-top: 3px;

@@ -58,6 +58,7 @@
 .textInput__container span {
   position: absolute;
   font-weight: 400;
+  cursor: default;
   color: transparent;
   font-size: 12px;
   margin-top: 3px;
