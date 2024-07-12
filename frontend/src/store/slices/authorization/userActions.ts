@@ -3,6 +3,7 @@ import { $api, $apiWithoutToken } from "../../../http"
 import { AuthResponse } from "../../../models/authorization.ts"
 import { AxiosError } from "axios"
 import { IUser } from "./userSlice.ts"
+import { LOCAL_STAORAGE_KEY_ACCESS } from "../../../shared/const/localStorage.tsx"
 
 interface requestArgs {
   email: string
@@ -77,12 +78,12 @@ export const checkAuth = createAsyncThunk(
       const response = await $api.post<Record<"token", string>>(
         "/token/verify/",
         {
-          token: localStorage.getItem("access"),
+          token: localStorage.getItem(LOCAL_STAORAGE_KEY_ACCESS),
         },
       )
 
       if (response.status == 200) {
-        return { accessToken: localStorage.getItem("access") }
+        return { accessToken: localStorage.getItem(LOCAL_STAORAGE_KEY_ACCESS) }
       } else {
         return { accessToken: null }
       }

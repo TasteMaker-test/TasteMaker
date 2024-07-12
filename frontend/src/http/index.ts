@@ -1,5 +1,9 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios"
 import { AuthResponse } from "../models/authorization.ts"
+import {
+  LOCAL_STAORAGE_KEY_ACCESS,
+  LOCAL_STAORAGE_KEY_REFRESH,
+} from "../shared/const/localStorage.tsx"
 export const API_URL = "/api"
 
 interface AxiosErrorType extends AxiosError {
@@ -21,7 +25,7 @@ export const $apiWithoutToken = axios.create({
 })
 
 $api.interceptors.request.use((config) => {
-  const access = localStorage.getItem("access")
+  const access = localStorage.getItem(LOCAL_STAORAGE_KEY_ACCESS)
   if (access) {
     config.headers.Authorization = `Bearer ${access}`
   }
@@ -41,11 +45,11 @@ $api.interceptors.response.use(
       try {
         const response = await axios.post<AuthResponse>(
           `${API_URL}/token/refresh/`,
-          { refresh: localStorage.getItem("refresh") },
+          { refresh: localStorage.getItem(LOCAL_STAORAGE_KEY_REFRESH) },
         )
 
         const { access } = response.data
-        localStorage.setItem("access", access)
+        localStorage.setItem(LOCAL_STAORAGE_KEY_ACCESS, access)
         originalRequest.headers.Authorization = `Bearer ${access}`
 
         if (originalRequest.data instanceof FormData) {

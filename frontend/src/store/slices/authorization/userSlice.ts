@@ -5,6 +5,10 @@ import {
   loginByEmail,
   registerByEmail,
 } from "./userActions.ts"
+import {
+  LOCAL_STAORAGE_KEY_ACCESS,
+  LOCAL_STAORAGE_KEY_REFRESH,
+} from "../../../shared/const/localStorage.tsx"
 
 export interface IUser {
   email: string | null
@@ -36,8 +40,14 @@ const userSlice = createSlice({
           state.accessToken = payload.accessToken
           state.email = payload.email
           state.refreshToken = payload.refreshToken
-          localStorage.setItem("access", payload.accessToken || "")
-          localStorage.setItem("refresh", payload.refreshToken || "")
+          localStorage.setItem(
+            LOCAL_STAORAGE_KEY_ACCESS,
+            payload.accessToken || "",
+          )
+          localStorage.setItem(
+            LOCAL_STAORAGE_KEY_REFRESH,
+            payload.refreshToken || "",
+          )
           state.status = "authorized"
         }
       })
@@ -48,16 +58,16 @@ const userSlice = createSlice({
           state.email = null
           state.accessToken = null
           state.refreshToken = null
-          localStorage.setItem("access", "")
-          localStorage.setItem("refresh", "")
+          localStorage.setItem(LOCAL_STAORAGE_KEY_ACCESS, "")
+          localStorage.setItem(LOCAL_STAORAGE_KEY_REFRESH, "")
         }
       })
       .addCase(loginByEmail.fulfilled, (state, { payload }) => {
         state.accessToken = payload.accessToken
         state.email = payload.email
         state.refreshToken = payload.refreshToken
-        localStorage.setItem("access", payload.accessToken)
-        localStorage.setItem("refresh", payload.refreshToken)
+        localStorage.setItem(LOCAL_STAORAGE_KEY_ACCESS, payload.accessToken)
+        localStorage.setItem(LOCAL_STAORAGE_KEY_REFRESH, payload.refreshToken)
         state.status = "authorized"
       })
       .addCase(loginByEmail.rejected, (state, action) => {

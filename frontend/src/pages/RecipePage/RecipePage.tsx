@@ -12,7 +12,7 @@ import { addRecipe, getRecipe } from "../../store/slices/recipes/recipeActions"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { RootState } from "../../store/store"
+import { RootState } from "../../providers/StoreProvider/config/store.ts"
 
 function Step(props) {
   return (

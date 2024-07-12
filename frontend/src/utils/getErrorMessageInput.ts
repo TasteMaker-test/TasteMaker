@@ -19,6 +19,6 @@ export const getErrorMessage = ({
   return (
     [maxLengthError, minLengthError, passwordError, emailError].find(
       (error) => error,
-    ) || ""
+    ) ?? ""
   )
 }
