@@ -35,9 +35,7 @@ export const getRecipe = createAsyncThunk<
     try {
       const response = await $apiWithoutToken.get<IRecipe>(`/recipes/${id}`)
 
-      const recipeResponse = response.data
-
-      return recipeResponse
+      return response.data
     } catch (e) {
       const error: AxiosError<RecipeErrorPayload> = e as never
       if (!error.response) {
