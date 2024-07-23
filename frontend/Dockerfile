@@ -12,7 +12,7 @@ RUN apt update && apt install netcat-openbsd -y
 
 USER node
 
-RUN npm install --force
+RUN npm install
 
 COPY --chown=node:node . .
 
