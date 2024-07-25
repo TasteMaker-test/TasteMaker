@@ -8,9 +8,7 @@ type Props = {
 export const RecipeList = ({ recipes }: Props) => {
   return (
     <div className={s.list}>
-      {recipes.map((recipe, i) => (
-        <RecipeItem {...recipe} key={i} />
-      ))}
+      {recipes.map((recipe, i) => <RecipeItem {...recipe} key={i} />).reverse()}
     </div>
   )
 }
