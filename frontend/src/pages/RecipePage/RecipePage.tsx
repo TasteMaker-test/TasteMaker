@@ -1,18 +1,16 @@
 import "./RecipePage.css"
-
 import s from "./RecipePage.module.css"
-
-import recipePreview from "./../../assets/recipe-example.png"
-import { useAppDispatch } from "../../hooks/reduxHooks"
+import recipePreview from "./../../shared/assets/recipe-example.png"
+import { useAppDispatch } from "../../shared/lib/hooks/reduxHooks"
 import {
   IRecipe,
   initialRecipeState,
-} from "../../store/slices/recipes/recipeSlice"
-import { addRecipe, getRecipe } from "../../store/slices/recipes/recipeActions"
+} from "../../shared/lib/store/slices/recipes/recipeSlice"
+import { addRecipe, getRecipe } from "../../shared/lib/store/slices/recipes/recipeActions"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { RootState } from "../../providers/StoreProvider/config/store.ts"
+import { RootState } from "../../app/providers/StoreProvider/config/store.ts"
 
 function Step(props) {
   return (

@@ -1,10 +1,10 @@
-import mockMainBanner from "../../assets/main-banner.jpg"
-import { RecipeList } from "../../components/RecipeCard/RecipeList/RecipeList.tsx"
+import mockMainBanner from "../../shared/assets/main-banner.jpg"
+import { RecipeList } from "../../shared/components/RecipeCard/RecipeList/RecipeList.tsx"
 import s from "./HomePage.module.css"
 import { useEffect, useState } from "react"
-import { $apiWithoutToken } from "../../http"
-import { IRecipe } from "../../store/slices/recipes/recipeSlice.ts"
-import { useAppSelector } from "../../hooks/reduxHooks.ts"
+import { $apiWithoutToken } from "../../shared/api"
+import { IRecipe } from "../../shared/lib/store/slices/recipes/recipeSlice.ts"
+import { useAppSelector } from "../../shared/lib/hooks/reduxHooks.ts"
 
 export const HomePage = () => {
   const [recipes, setRecipes] = useState<IRecipe[]>([])
