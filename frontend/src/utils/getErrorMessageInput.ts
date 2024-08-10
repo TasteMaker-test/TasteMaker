@@ -1,5 +1,5 @@
-import { useValidationReturnType } from "../hooks/useValidation.ts"
-import { useInputReturnType } from "../hooks/useInput.ts"
+import { useValidationReturnType } from "../shared/lib/hooks/useValidation.ts"
+import { useInputReturnType } from "../shared/lib/hooks/useInput.ts"
 
 interface getErrorMessageProps
   extends Omit<useValidationReturnType, "validInput">,

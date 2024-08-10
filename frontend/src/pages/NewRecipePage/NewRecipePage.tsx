@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom"
-import { Textarea } from "../../components/UI/Textarea/Textarea.tsx"
-import { Input } from "../../components/UI/Input/Input.tsx"
-import { useInput } from "../../hooks/useInput.ts"
+import { Textarea } from "../../shared/components/UI/Textarea/Textarea.tsx"
+import { Input } from "../../shared/components/UI/Input/Input.tsx"
+import { useInput } from "../../shared/lib/hooks/useInput.ts"
 import s from "./NewRecipePage.module.css"
-import { Button } from "../../components/UI/Button/Button.tsx"
-import { UploadInput } from "../../components/UploadInput/UploadInput.tsx"
+import { Button } from "../../shared/components/UI/Button/Button.tsx"
+import { UploadInput } from "../../shared/components/UploadInput/UploadInput.tsx"
 import { FormEventHandler, useRef, useState } from "react"
-import { useAppDispatch } from "../../hooks/reduxHooks.ts"
+import { useAppDispatch } from "../../shared/lib/hooks/reduxHooks.ts"
 import FormData from "form-data"
-import { addRecipe } from "../../store/slices/recipes/recipeActions.ts"
+import { addRecipe } from "../../shared/lib/store/slices/recipes/recipeActions.ts"
 
 export const NewRecipePage = () => {
   const dispatch = useAppDispatch()

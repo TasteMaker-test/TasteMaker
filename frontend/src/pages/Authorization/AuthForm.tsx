@@ -1,17 +1,17 @@
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks.ts"
-import { useAuth } from "../../hooks/useAuth.ts"
+import { useAppDispatch, useAppSelector } from "../../shared/lib/hooks/reduxHooks.ts"
+import { useAuth } from "../../shared/lib/hooks/useAuth.ts"
 import {
   loginByEmail,
   registerByEmail,
-} from "../../store/slices/authorization/userActions.ts"
-import { useInput } from "../../hooks/useInput.ts"
+} from "../../shared/lib/store/slices/authorization/userActions.ts"
+import { useInput } from "../../shared/lib/hooks/useInput.ts"
 import { Link, Navigate, useLocation } from "react-router-dom"
-import { Form } from "../../components/UI/Form/Form.tsx"
+import { Form } from "../../shared/components/UI/Form/Form.tsx"
 import s from "./AuthForm.module.css"
-import { Input } from "../../components/UI/Input/Input.tsx"
-import { Button } from "../../components/UI/Button/Button.tsx"
+import { Input } from "../../shared/components/UI/Input/Input.tsx"
+import { Button } from "../../shared/components/UI/Button/Button.tsx"
 import { useEffect, useRef } from "react"
-import { clearErrorMessage } from "../../store/slices/authorization/userSlice.ts"
+import { clearErrorMessage } from "../../shared/lib/store/slices/authorization/userSlice.ts"
 
 interface Props {
   formType: "registration" | "authorization"
